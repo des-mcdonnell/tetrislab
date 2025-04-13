@@ -6,9 +6,9 @@ import { CSV_COLUMNS_TO_INCLUDE } from './constants';
 import { getFilteredParticipantData, getTransformedParticipantData } from './helpers'
 import { ParticipantRow } from './types';
 
-const csvInputPath = '../Sources/participants_rows.csv';
-const csvOutputPath = '../Data/participantData.csv';
-const jsonOutputPath = '../Data/participantData.json';
+const csvInputPath = 'data/participants_rows.csv';
+const csvOutputPath = 'data/participants_data.csv';
+const jsonOutputPath = 'data/participants_data.json';
 
 const results: any[] = [];
 
