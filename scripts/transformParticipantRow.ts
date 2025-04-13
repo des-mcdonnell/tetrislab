@@ -12,8 +12,8 @@ const jsonOutputPath = 'data/participants_data.json';
 
 const results: any[] = [];
 
-fs.createReadStream(csvInputPath)
-  .pipe(csv())
+// @ts-ignore TODO: Type with 'Readable' from 'stream'
+fs.createReadStream(csvInputPath).pipe(csv())
   .on('data', (data: ParticipantRow) => {
     const filteredParticipantData = getFilteredParticipantData(data, CSV_COLUMNS_TO_INCLUDE);
     const transformedParticipantData = getTransformedParticipantData(filteredParticipantData);
