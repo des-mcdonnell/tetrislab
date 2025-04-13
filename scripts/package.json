@@ -1,0 +1,19 @@
+{
+  "name": "tetris-lab-results",
+  "version": "1.0.0",
+  "description": "TetrisLab results scripts",
+  "main": "transformParticipantRow.ts",
+  "scripts": {
+    "start": "ts-node transformParticipantRow.ts"
+  },
+  "author": "Des McDonnell",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/json2csv": "^5.0.7",
+    "@types/node": "^22.14.1",
+    "csv-parser": "^3.2.0",
+    "json2csv": "^6.0.0-alpha.2",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.0.0"
+  }
+}
