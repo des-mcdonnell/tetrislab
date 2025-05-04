@@ -4,7 +4,7 @@
   "description": "TetrisLab results scripts",
   "main": "transformParticipantRow.ts",
   "scripts": {
-    "start": "ts-node transformParticipantRow.ts"
+    "transform-participant-row": "ts-node transformParticipantRow.ts"
   },
   "author": "Des McDonnell",
   "license": "MIT",
