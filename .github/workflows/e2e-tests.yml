@@ -1,6 +1,10 @@
 name: E2E Tests
 
-on: push
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
+    workflow_dispatch: # Optional: enables manual triggering from GitHub UI
 
 jobs:
   cypress-run:
@@ -17,3 +21,36 @@ jobs:
         with:
           build: npm run build
           start: npm start
+      - name: Send email on success
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "✅ TetrisLab E2E Tests Passed - ${{ github.repository }}"
+          to: ${{ secrets.SMTP_USERNAME }}
+          from: GitHub Actions <${{ secrets.SMTP_USERNAME }}>
+          body: |
+            Your scheduled E2E test run passed.
+            Commit: ${{ github.sha }}
+            Run: ${{ github.run_url }}
+
+      - name: Send email on failure
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "❌ TetrisLab E2E Tests Failed - ${{ github.repository }}"
+          to: ${{ secrets.SMTP_USERNAME }}
+          from: GitHub Actions <${{ secrets.SMTP_USERNAME }}>
+          body: |
+            Your scheduled E2E test run failed.
+            Commit: ${{ github.sha }}
+            Run: ${{ github.run_url }}
+
+
