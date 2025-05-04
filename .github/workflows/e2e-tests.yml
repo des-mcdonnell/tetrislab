@@ -3,8 +3,7 @@ name: E2E Tests
 on:
   push:
   schedule:
-    - cron: '0 0 * * *'  # Runs every day at midnight UTC
-    workflow_dispatch: # Optional: enables manual triggering from GitHub UI
+    - cron: "0 0 * * *" # Runs every day at midnight UTC
 
 jobs:
   cypress-run:
@@ -52,5 +51,3 @@ jobs:
             Your scheduled E2E test run failed.
             Commit: ${{ github.sha }}
             Run: ${{ github.run_url }}
-
-
