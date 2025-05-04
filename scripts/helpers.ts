@@ -1,6 +1,6 @@
-import { FSS_ITEMS, MMTR_ITEMS, MMTR_LEVEL_DIVIDER, VARIANT_VALUES, } from './constants';
+import { FSS_ITEMS, MMTR_ITEMS, VARIANT_VALUES, } from './constants';
 
-import { ParticipantRow, SurveyItem } from './types';
+import { ParticipantRow, SurveyItem, NotificationItem } from './types';
 
 export const getFilteredParticipantData = (data: ParticipantRow, csvColumnsToInclude: string[]) => {
   // Filter the data to include only the specified columns
@@ -13,9 +13,7 @@ export const getFilteredParticipantData = (data: ParticipantRow, csvColumnsToInc
 }
 
 export const getTransformedParticipantData = (data: ParticipantRow) => {
-  const {id, gender, age, variant, mmtr, fss, gameLevel, gameRows, gameScore, gameStart, gameEnd, overallStart, overallEnd} = data;
-  const mmtrTotal = getSurveyTotal(JSON.parse(mmtr));
-  const ffsTotal = getSurveyTotal(JSON.parse(fss));
+  const {id, gender, age, variant, mmtr, fss, gameScore, notifications} = data;
 
   return {
     'ID': Number(id),
@@ -23,15 +21,10 @@ export const getTransformedParticipantData = (data: ParticipantRow) => {
     'AGE': Number(age),
     'GROUP': VARIANT_VALUES[variant as keyof typeof VARIANT_VALUES],
     ...transformSurveyData(JSON.parse(mmtr), MMTR_ITEMS),
-    'MMTR_TOTAL': mmtrTotal,
-    'MMTR_LEVEL': mmtrTotal! > MMTR_LEVEL_DIVIDER ? 2 : 1,
     ...transformSurveyData(JSON.parse(fss), FSS_ITEMS),
-    'FFS_TOTAL': ffsTotal,
-    'TETRIS_LEVEL': Number(gameLevel),
-    'TETRIS_ROWS': Number(gameRows),
     'TETRIS_SCORE': Number(gameScore),
-    'TETRIS_TOT': Number(gameEnd) - Number(gameStart),
-    'TOTAL_DURATION': Number(overallEnd) - Number(overallStart),
+    'NOTIFICATIONS_COUNT': getNotificationsCount(JSON.parse(notifications)),
+    'NOTIFICATIONS_DURATION': getNotificationsDuration(JSON.parse(notifications))
   };
 }
 
@@ -43,14 +36,13 @@ export const transformSurveyData = (data: SurveyItem[], spssVariableNames: strin
   }, {} as { [key: string]: number | null });
 };
 
-export const getSurveyTotal = (data: SurveyItem[]) => {
-  return data
-    .map(item => item.response?.value)
-    .reduce((acc, value) => {
-      if (value !== undefined) {
-        return acc! + value;
-      } else {
-        return acc;
-      }
-    }, 0);
-};
+export const getNotificationsCount = (notifications: NotificationItem[]) => {
+  return notifications.length;
+}
+
+export const getNotificationsDuration = (notifications: NotificationItem[]) => {
+  return notifications.reduce((totalDuration, notification) => {
+    const duration = notification.end - notification.start;
+    return totalDuration + duration;
+  }, 0)
+}
