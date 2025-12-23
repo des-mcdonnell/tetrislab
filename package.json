@@ -20,7 +20,7 @@
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.48.1",
     "@toolpad/core": "^0.12.0",
-    "next": "15.1.6",
+    "next": "15.1.11",
     "passphrase.js": "^0.0.3",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
